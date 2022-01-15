@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+readonly command="$(basename "${0}")"
+subcommand="$(echo "${command}" | cut -s -d. -f2)"
+
+case "$OSTYPE" in
+  solaris*) echo "SOLARIS" ;;
+  darwin*)
+  OS="OSX" ;; 
+  linux*)
+  OS="Linux" ;;
+  msys*)
+  OS="Windows" ;;
+  *)        echo "unknown: $OSTYPE" ;;
+esac
+
+if [[ "${subcommand}" == "" ]]; then
+    subcommand="${1}"
+fi
+
+if [[ "${subcommand}" == "" ]]; then
+    echo "Eticon Error: Command not found" 1>&2
+    exit 1
+fi
+
+if [[ "${subcommand}" == "version" ]]; then
+    echo "ETICON Core v1.0.0-macOS"
+    exit 1
+fi
+
+if [[ "${subcommand}" == "update" ]]; then
+    ETICON_PATH=$(which eticon)
+    length=${#ETICON_PATH}
+    MAIN_PATH=${ETICON_PATH:0:length-6}
+    cd $MAIN_PATH
+    git pull --rebase
+    exit 1
+fi
+
+if [[ "${subcommand}" == "open" ]]; then
+    echo "Open Start" 1>&2
+    if [[ "$OS" == "Linux" ]]; then
+        ETICON_PATH=$(which eticon)
+    length=${#ETICON_PATH}
+    MAIN_PATH=${ETICON_PATH:0:length-6}
+   "${MAIN_PATH}/ETICON Core" "$PWD" &
+fi
+    exit 1
+fi
+
+echo "Eticon Error: Command not found" 2>&1 &
+exit 1
