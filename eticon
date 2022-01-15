@@ -23,7 +23,7 @@ if [[ "${subcommand}" == "" ]]; then
 fi
 
 if [[ "${subcommand}" == "version" ]]; then
-    echo "ETICON Core v1.0.0-macOS"
+    echo "ETICON Core v1.0.0-linux"
     exit 1
 fi
 
@@ -31,7 +31,7 @@ if [[ "${subcommand}" == "update" ]]; then
     ETICON_PATH=$(which eticon)
     length=${#ETICON_PATH}
     MAIN_PATH=${ETICON_PATH:0:length-6}
-    cd $MAIN_PATH
+    cd "$MAIN_PATH"
     git pull --rebase
     exit 1
 fi
